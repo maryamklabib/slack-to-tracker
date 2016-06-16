@@ -1,4 +1,5 @@
 manifest.yml
 /log/*
 /tmp/*
+config/credentials.yml
 /db/development.sqlite3
