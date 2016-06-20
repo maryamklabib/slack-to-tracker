@@ -4,7 +4,7 @@
 
 ####Example Usage
 ```
-/story bug Ops Manager cannot talk to BOSH'
+/story bug Ops 'Manager cannot talk to BOSH'
 ```
 ```
 Here's your story "Ops Manager cannot talk to BOSH" in the Ops Manager Tracker! http://link.tracker.com
