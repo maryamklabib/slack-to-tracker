@@ -1,4 +1,4 @@
-require '~/code/slack-to-tracker/app/models/PivotalTrackerClient.rb'
+#require '~/code/slack-to-tracker/app/models/PivotalTrackerClient.rb'
 
 class StoriesController < ApplicationController
   skip_before_filter  :verify_authenticity_token
@@ -11,7 +11,7 @@ class StoriesController < ApplicationController
   def create
   	token = TRACKER_TOKEN
   	project_id = PROJECT_ID
-    title = params[:title]
+    title = params[:text]
   	client = PivotalTrackerClient.new
   	response = client.create_story(token, title, project_id)
   	render json: response 
