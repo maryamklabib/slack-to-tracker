@@ -12,8 +12,12 @@ class StoriesController < ApplicationController
   	token = TRACKER_TOKEN
   	project_id = PROJECT_ID
     title = params[:text]
-  	client = PivotalTrackerClient.new
-  	response = client.create_story(token, title, project_id)
-  	render json: response 
+    slack_user_id = params[:user_id]
+    slack_client = SlackClient.new
+    email = slack_client.id_to_email(slack_user_id) 
+  	
+    client = PivotalTrackerClient.new
+    if client.can_make_story?(email, project_id)
+    	client.create_story(token, title, project_id)
   end
 end
