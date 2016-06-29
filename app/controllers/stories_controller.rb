@@ -1,4 +1,4 @@
-#require '~/code/slack-to-tracker/app/models/PivotalTrackerClient.rb'
+# require '~/code/slack-to-tracker/app/models/PivotalTrackerClient.rb'
 
 class StoriesController < ApplicationController
   skip_before_filter  :verify_authenticity_token
@@ -9,15 +9,15 @@ class StoriesController < ApplicationController
   end
 
   def create
-  	token = TRACKER_TOKEN
-  	project_id = PROJECT_ID
     title = params[:text]
     slack_user_id = params[:user_id]
+
     slack_client = SlackClient.new
-    email = slack_client.id_to_email(slack_user_id) 
-  	
+    email = slack_client.id_to_email(slack_user_id)
+
     client = PivotalTrackerClient.new
-    if client.can_make_story?(email, project_id)
-    	client.create_story(token, title, project_id)
+    if client.can_make_story?(email, PROJECT_ID)
+    	client.create_story(TRACKER_TOKEN, title, PROJECT_ID)
+    end
   end
 end
