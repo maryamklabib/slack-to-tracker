@@ -20,6 +20,8 @@ class StoriesController < ApplicationController
     tracker_client = PivotalTrackerClient.new(TRACKER_TOKEN, PROJECT_ID)
     if tracker_client.can_make_story?(email)
     	tracker_client.create_story(title)
+    else
+      render 500
     end
   end
 end
