@@ -3,5 +3,5 @@ manifest.yml
 /tmp/*
 config/credentials.yml
 config/secrets.yml
+config/commands.md
 /db/development.sqlite3
-

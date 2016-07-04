@@ -24,7 +24,9 @@ def create_story(title)
 		"story_type": "bug"
 		}.to_json
 	response = http.request(request)
-	response.code
+	code = response.code
+	response = JSON.parse(response.body)
+	return response['url']
 	end
 
 def can_make_story?(email_from_slack)

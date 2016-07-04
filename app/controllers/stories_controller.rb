@@ -1,10 +1,10 @@
-require '~/code/slack-to-tracker/app/models/PivotalTrackerClient.rb'
+require ::File.expand_path("./../../models/PivotalTrackerClient.rb", __FILE__)
 
 class StoriesController < ApplicationController
   skip_before_filter  :verify_authenticity_token
-  FILE = HashWithIndifferentAccess.new(YAML.load(File.read(File.expand_path('../../../config/credentials.yml', __FILE__))))
-  PROJECT_ID = FILE['project_id']
-  TRACKER_TOKEN = FILE['tracker_token']
+  CREDENTIALS = HashWithIndifferentAccess.new(YAML.load(File.read(File.expand_path('../../../config/credentials.yml', __FILE__))))
+  PROJECT_ID = CREDENTIALS['project_id']
+  TRACKER_TOKEN = CREDENTIALS['tracker_token']
 
   def index
   end
@@ -16,10 +16,17 @@ class StoriesController < ApplicationController
     slack_client = Slack::Web::Client.new
     response = slack_client.users_info(user: slack_user_id)
     email = response['user']['profile']['email']
+    slack_username = response['user']['name']
 
     tracker_client = PivotalTrackerClient.new(TRACKER_TOKEN, PROJECT_ID)
     if tracker_client.can_make_story?(email)
-    	tracker_client.create_story(title)
+    	url = tracker_client.create_story(title)
+      render json: {
+                  "parse": "full",
+                  "link_names": 1,
+                  "response_type": "in_channel",
+                  "text": "@#{slack_username} created a :tracker_bug: in the Ops Manager backlog titled:\n*#{title}*\n#{url}"
+                  }
     else
       render 500
     end
